@@ -15,5 +15,5 @@
 #define LOG_BACKUP_COUNT   5
 
 // firebase
-#define FIREBASE_URL "https://nutc-web-default-rtdb.firebaseio.com/"
+#define FIREBASE_URL "https://finrl-contest-f019d-default-rtdb.firebaseio.com/"
 // #define FIREBASE_URL "127.0.0.1:9000"
