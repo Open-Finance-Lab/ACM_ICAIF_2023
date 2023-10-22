@@ -39,4 +39,5 @@ sharpe_ratio = (average_return - risk_free_rate) / std_deviation
 
 print(f"Average Daily Return: {average_return:.6f}")
 print(f"Standard Deviation of Daily Returns: {std_deviation:.6f}")
-print(f"Sharpe Ratio: {sharpe_ratio:.6f}")
+print(f"Daily Sharpe Ratio: {sharpe_ratio:.6f}")
+print(f"Annualized Sharpe:{sharpe_ratio* np.sqrt(252)}")
