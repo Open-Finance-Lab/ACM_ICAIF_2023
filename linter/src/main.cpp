@@ -1,7 +1,8 @@
 #define CROW_MAIN
 #include "common.hpp"
 #include "git.h"
-#include "lint/lint.hpp"
+#include "lint_track_one/lint.hpp"
+#include "lint_track_two/lint.hpp"
 #include "thread_safe_queue/tsq.hpp"
 
 #include <argparse/argparse.hpp>
@@ -114,7 +115,7 @@ main(int argc, const char** argv)
         std::string algo_id = pair.value().second;
         std::stringstream ss;
         log_i(main, "Linting algo_id: {} for user: {}", algo_id, uid);
-        std::string response = nutc::lint::lint(uid, algo_id);
+        std::string response = nutc::lint_track_one::lint(uid, algo_id);
         nutc::client::set_lint_success(uid, algo_id, ss.str() + "\n");
     }
     pybind11::finalize_interpreter();

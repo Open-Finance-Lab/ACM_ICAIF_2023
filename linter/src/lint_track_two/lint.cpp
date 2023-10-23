@@ -1,7 +1,8 @@
 #include "lint.hpp"
 
+// Track two for NUTC Contest
 namespace nutc {
-namespace lint {
+namespace lint_track_two {
 std::string
 lint(const std::string& uid, const std::string& algo_id)
 {
@@ -45,5 +46,5 @@ lint(const std::string& uid, const std::string& algo_id)
 
     return "Lint succeeded!";
 }
-} // namespace lint
+} // namespace lint_track_two
 } // namespace nutc

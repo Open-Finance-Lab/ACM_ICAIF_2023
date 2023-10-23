@@ -43,10 +43,13 @@ add_library(
     src/firebase/fetching.cpp
     src/pywrapper/runtime.cpp
     src/mock_api/mock_api.cpp
-    src/lint/lint.cpp
+    src/lint_track_two/lint.cpp
+    src/lint_track_one/lint.cpp
     src/thread_safe_queue/tsq.cpp
     # Utils
     src/logging.cpp
+        src/pywrapper/runtime_track_one.cpp
+        src/pywrapper/runtime_track_one.hpp
 )
 
 target_include_directories(
@@ -70,7 +73,6 @@ target_link_libraries(NUTC-client_lib PRIVATE Python::Python)
 # ---- Declare executable ----
 
 add_executable(NUTC-client_exe src/main.cpp)
-add_executable(NUTC-client::exe ALIAS NUTC-client_exe)
 
 set_property(TARGET NUTC-client_exe PROPERTY OUTPUT_NAME NUTC-client)
 
