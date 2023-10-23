@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "nutc-web"
-  }
+    "default": "finrl-contest-2023",
+    "prod": "finrl-contest-2023"
+  },
+  "targets": {},
+  "etags": {}
 }
