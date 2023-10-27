@@ -24,7 +24,7 @@ ThreadSafeQueue<T>::pop()
     return value;
 }
 
-template class ThreadSafeQueue<std::pair<std::string, std::string>>;
+template class ThreadSafeQueue<std::tuple<std::string, std::string, int>>;
 
 } // namespace tsq
 } // namespace nutc
