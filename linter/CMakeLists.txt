@@ -48,8 +48,8 @@ add_library(
     src/thread_safe_queue/tsq.cpp
     # Utils
     src/logging.cpp
-        src/pywrapper/runtime_track_one.cpp
-        src/pywrapper/runtime_track_one.hpp
+    src/pywrapper/runtime_track_one.cpp
+    src/pywrapper/runtime_track_one.hpp
 )
 
 target_include_directories(
