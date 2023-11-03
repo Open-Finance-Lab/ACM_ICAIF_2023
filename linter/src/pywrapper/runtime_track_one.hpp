@@ -10,10 +10,6 @@
 
 namespace nutc {
     namespace pywrapper_track_one {
-        [[nodiscard]] bool create_api_module(
-                std::function<bool(const std::string&, const std::string&, float, float)>
-                publish_market_order
-        );
         [[nodiscard]] std::optional<std::string> import_py_code(const std::string& code);
 
         [[nodiscard]] std::optional<std::string> run_initialization();

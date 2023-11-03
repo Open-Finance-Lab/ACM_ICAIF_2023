@@ -2,44 +2,58 @@
 
 namespace py = pybind11;
 
+class PyStdErrOutStreamRedirect {
+    py::object _stdout;
+    py::object _stderr;
+    py::object _stdout_buffer;
+    py::object _stderr_buffer;
+public:
+    PyStdErrOutStreamRedirect() {
+        auto sysm = py::module::import("sys");
+        _stdout = sysm.attr("stdout");
+        _stderr = sysm.attr("stderr");
+        auto stringio = py::module::import("io").attr("StringIO");
+        _stdout_buffer = stringio();  // Other filelike object can be used here as well, such as objects created by pybind11
+        _stderr_buffer = stringio();
+        sysm.attr("stdout") = _stdout_buffer;
+        sysm.attr("stderr") = _stderr_buffer;
+    }
+    std::string stdoutString() {
+        _stdout_buffer.attr("seek")(0);
+        return py::str(_stdout_buffer.attr("read")());
+    }
+    std::string stderrString() {
+        _stderr_buffer.attr("seek")(0);
+        return py::str(_stderr_buffer.attr("read")());
+    }
+    ~PyStdErrOutStreamRedirect() {
+        auto sysm = py::module::import("sys");
+        sysm.attr("stdout") = _stdout;
+        sysm.attr("stderr") = _stderr;
+    }
+};
+
 namespace nutc {
 namespace pywrapper_track_one {
-
-bool
-create_api_module(
-    std::function<bool(const std::string&, const std::string&, float, float)>
-        publish_market_order
-)
-{
-    try {
-        py::module m = py::module::create_extension_module(
-            "nutc_api", "Official NUTC Exchange API", new py::module::module_def
-        );
-        m.def("publish_market_order", publish_market_order);
-
-        py::module_ sys = py::module_::import("sys");
-        py::dict sys_modules = sys.attr("modules").cast<py::dict>();
-        sys_modules["nutc_api"] = m;
-
-        py::exec(R"(import nutc_api)");
-    } catch (const std::exception& e) {
-        return false;
-    }
-    return true;
-}
 
 std::optional<std::string>
 import_py_code(const std::string& code)
 {
     log_i(mock_runtime, "Importing algorithm code into python interpreter");
+
+    PyStdErrOutStreamRedirect pyOutputRedirect{};
     try {
+        py::exec("__name__ = '__main__'");
         py::exec(code);
+        log_i(main, "result: \"{}\"", pyOutputRedirect.stdoutString());
+        log_i(main, "stderr: \"{}\"", pyOutputRedirect.stderrString());
     } catch (const std::exception& e) {
+        log_i(main, "result: \"{}\"", pyOutputRedirect.stdoutString());
+        log_i(main, "stderr: \"{}\"", pyOutputRedirect.stderrString());
         return fmt::format("Failed to import code: {}", e.what());
     }
-    py::exec(R"(
-        def place_market_order(side, ticker, quantity, price):
-            nutc_api.publish_market_order(side, ticker, quantity, price))");
+
+
 
     return std::nullopt;
 }
