@@ -56,14 +56,8 @@ async function writeNewAlgo(
 ) {
   algo.task = selectedTask;
   let hasEmptyFile = false;
-  if (algo.task === "Task I") {
-    for (let i = 0; i < 4; i++) {
-      if (submissionFiles[i].downloadURL === "") {
-        hasEmptyFile = true;
-      }
-    }
-  } else {
-    if (submissionFiles[0].downloadURL === "") {
+  for (let i = 0; i < submissionFiles.length; i++) {
+    if (submissionFiles[i].downloadURL === "") {
       hasEmptyFile = true;
     }
   }
@@ -112,21 +106,6 @@ export default function Submission() {
       downloadURL: "",
       fileIdKey: "",
     },
-    {
-      fileName: "",
-      downloadURL: "",
-      fileIdKey: "",
-    },
-    {
-      fileName: "",
-      downloadURL: "",
-      fileIdKey: "",
-    },
-    {
-      fileName: "",
-      downloadURL: "",
-      fileIdKey: "",
-    },
   ]);
 
   const [submissionFilesTaskTwo, setSubmissionFilesTaskTwo] = useState<
@@ -151,14 +130,8 @@ export default function Submission() {
   const [isDragOver, setDragOver] = useState([
     false,
     false,
-    false,
-    false,
-    false,
   ]);
   const refs = [
-    useRef<any>(),
-    useRef<any>(),
-    useRef<any>(),
     useRef<any>(),
     useRef<any>(),
   ]; // first two is for task one and last one is for task two
@@ -414,7 +387,7 @@ export default function Submission() {
                       onDragOver={(e) => handleDragOver(e, 0)}
                       onDragLeave={() => handleDragLeave(0)}
                       onDrop={(e) =>
-                        handleDrop(e, "requirements_txt", "txt", 0)
+                        handleDrop(e, "task_I_submission_zip", "zip", 0)
                       }
                     >
                       <div className="text-center">
@@ -432,133 +405,20 @@ export default function Submission() {
                         )}
                         <div className="mt-4 flex text-sm leading-6 text-gray-400">
                           <label
-                            htmlFor="file-upload-requirements"
+                            htmlFor="file-upload-task_one"
                             className="relative cursor-pointer rounded-md bg-gray-900 font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:text-indigo-500"
                           >
-                            <span>Upload requirements.txt</span>
+                            <span>Upload .zip</span>
                             <input
-                              id="file-upload-requirements"
-                              name="file-upload-requirements"
+                              id="file-upload-task_one"
+                              name="file-upload-task_one"
                               onChange={(e) => {
                                 handleFileChange(
-                                  "requirements_txt",
-                                  "txt",
+                                  "task_I_submission_zip",
+                                  "zip",
                                   0,
                                   //@ts-ignore
                                   e.target.files![0]
-                                );
-                              }}
-                              multiple
-                              type="file"
-                              className="sr-only"
-                            />
-                          </label>
-                          <p className="pl-1">or drag and drop</p>
-                        </div>
-                        <p className="text-xs leading-5 text-gray-400">
-                          .txt up to 100KB
-                        </p>
-                      </div>
-                    </div>
-
-                    <div
-                      className={
-                        submissionFilesTaskOne[1].downloadURL
-                          ? "mt-2 flex justify-center rounded-lg border border-solid border-green-400 px-6 py-10"
-                          : isDragOver[1]
-                          ? "mt-2 flex justify-center rounded-lg border border-solid border-indigo-500 px-6 py-10"
-                          : "mt-2 flex justify-center rounded-lg border border-dashed border-white/25 px-6 py-10"
-                      }
-                      ref={refs[1]}
-                      onDragOver={(e) => handleDragOver(e, 1)}
-                      onDragLeave={() => handleDragLeave(1)}
-                      onDrop={(e) => handleDrop(e, "test_py", "py", 1)}
-                    >
-                      <div className="text-center">
-                        {!submissionFilesTaskOne[1].downloadURL && (
-                          <PaperClipIcon
-                            className="mx-auto h-12 w-12 text-gray-500"
-                            aria-hidden="true"
-                          />
-                        )}
-                        {submissionFilesTaskOne[1].downloadURL && (
-                          <CheckIcon
-                            className="mx-auto h-12 w-12 text-green-500"
-                            aria-hidden="true"
-                          />
-                        )}
-                        <div className="mt-4 flex text-sm leading-6 text-gray-400">
-                          <label
-                            htmlFor="file-upload-test"
-                            className="relative cursor-pointer rounded-md bg-gray-900 font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:text-indigo-500"
-                          >
-                            <span>Upload test.py</span>
-                            <input
-                              id="file-upload-test"
-                              name="file-upload-test"
-                              onChange={(e) => {
-                                handleFileChange(
-                                  "test_py",
-                                  "py",
-                                  1,
-                                  //@ts-ignore
-                                  e.target.files[0]
-                                );
-                              }}
-                              type="file"
-                              className="sr-only"
-                            />
-                          </label>
-                          <p className="pl-1">or drag and drop</p>
-                        </div>
-                        <p className="text-xs leading-5 text-gray-400">
-                          .py up to 100KB
-                        </p>
-                      </div>
-                    </div>
-
-                    <div
-                      className={
-                        submissionFilesTaskOne[2].downloadURL
-                          ? "mt-2 flex justify-center rounded-lg border border-solid border-green-400 px-6 py-10"
-                          : isDragOver[2]
-                          ? "mt-2 flex justify-center rounded-lg border border-solid border-indigo-500 px-6 py-10"
-                          : "mt-2 flex justify-center rounded-lg border border-dashed border-white/25 px-6 py-10"
-                      }
-                      ref={refs[2]}
-                      onDragOver={(e) => handleDragOver(e, 2)}
-                      onDragLeave={() => handleDragLeave(2)}
-                      onDrop={(e) => handleDrop(e, "trained_ppo_zip", "zip", 2)}
-                    >
-                      <div className="text-center">
-                        {!submissionFilesTaskOne[2].downloadURL && (
-                          <PaperClipIcon
-                            className="mx-auto h-12 w-12 text-gray-500"
-                            aria-hidden="true"
-                          />
-                        )}
-                        {submissionFilesTaskOne[2].downloadURL && (
-                          <CheckIcon
-                            className="mx-auto h-12 w-12 text-green-500"
-                            aria-hidden="true"
-                          />
-                        )}
-                        <div className="mt-4 flex text-sm leading-6 text-gray-400">
-                          <label
-                            htmlFor="file-upload-trained_model"
-                            className="relative cursor-pointer rounded-md bg-gray-900 font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:text-indigo-500"
-                          >
-                            <span>Upload trained model</span>
-                            <input
-                              id="file-upload-trained_model"
-                              name="file-upload-trained_model"
-                              onChange={(e) => {
-                                handleFileChange(
-                                  "trained_ppo_zip",
-                                  "zip",
-                                  2,
-                                  //@ts-ignore
-                                  e.target.files[0]
                                 );
                               }}
                               type="file"
@@ -573,125 +433,73 @@ export default function Submission() {
                       </div>
                     </div>
 
-                    <div
-                      className={
-                        submissionFilesTaskOne[3].downloadURL
-                          ? "mt-2 flex justify-center rounded-lg border border-solid border-green-400 px-6 py-10"
-                          : isDragOver[3]
-                          ? "mt-2 flex justify-center rounded-lg border border-solid border-indigo-500 px-6 py-10"
-                          : "mt-2 flex justify-center rounded-lg border border-dashed border-white/25 px-6 py-10"
-                      }
-                      ref={refs[3]}
-                      onDragOver={(e) => handleDragOver(e, 3)}
-                      onDragLeave={() => handleDragLeave(3)}
-                      onDrop={(e) => handleDrop(e, "readme_md", "md", 3)}
-                    >
-                      <div className="text-center">
-                        {!submissionFilesTaskOne[3].downloadURL && (
-                          <PaperClipIcon
-                            className="mx-auto h-12 w-12 text-gray-500"
-                            aria-hidden="true"
-                          />
-                        )}
-                        {submissionFilesTaskOne[3].downloadURL && (
-                          <CheckIcon
-                            className="mx-auto h-12 w-12 text-green-500"
-                            aria-hidden="true"
-                          />
-                        )}
-                        <div className="mt-4 flex text-sm leading-6 text-gray-400">
-                          <label
-                            htmlFor="file-upload-readme_md"
-                            className="relative cursor-pointer rounded-md bg-gray-900 font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:text-indigo-500"
-                          >
-                            <span>Upload readme.md</span>
-                            <input
-                              id="file-upload-readme_md"
-                              name="file-upload-readme_md"
-                              onChange={(e) => {
-                                handleFileChange(
-                                  "readme_md",
-                                  "md",
-                                  3,
-                                  //@ts-ignore
-                                  e.target.files[0]
-                                );
-                              }}
-                              type="file"
-                              className="sr-only"
-                            />
-                          </label>
-                          <p className="pl-1">or drag and drop</p>
-                        </div>
-                        <p className="text-xs leading-5 text-gray-400">
-                          .md up to 100KB
-                        </p>
-                      </div>
-                    </div>
                   </>
                 )}
 
                 {selectedTask === "Task II" && (
-                  <>
-                    <div
-                      className={
-                        submissionFilesTaskTwo[0].downloadURL
-                          ? "mt-2 flex justify-center rounded-lg border border-solid border-green-400 px-6 py-10"
-                          : isDragOver[4]
-                          ? "mt-2 flex justify-center rounded-lg border border-solid border-indigo-500 px-6 py-10"
-                          : "mt-2 flex justify-center rounded-lg border border-dashed border-white/25 px-6 py-10"
-                      }
-                      ref={refs[4]}
-                      onDragOver={(e) => handleDragOver(e, 4)}
-                      onDragLeave={() => handleDragLeave(4)}
-                      onDrop={(e) =>
-                        handleDrop(e, "task_two_algo_py", "py", 0)
-                      }
-                    >
-                      <div className="text-center">
-                        {!submissionFilesTaskTwo[0].downloadURL && (
-                          <PaperClipIcon
-                            className="mx-auto h-12 w-12 text-gray-500"
-                            aria-hidden="true"
-                          />
-                        )}
-                        {submissionFilesTaskTwo[0].downloadURL && (
-                          <CheckIcon
-                            className="mx-auto h-12 w-12 text-green-500"
-                            aria-hidden="true"
-                          />
-                        )}
-                        <div className="mt-4 flex text-sm leading-6 text-gray-400">
-                          <label
-                            htmlFor="file-upload-task_two_algo_py"
-                            className="relative cursor-pointer rounded-md bg-gray-900 font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:text-indigo-500"
-                          >
-                            <span>Upload your algorithm for Task II</span>
-                            <input
-                              id="file-upload-task_two_algo_py"
-                              name="file-upload-task_two_algo_py"
-                              onChange={(e) => {
-                                handleFileChange(
-                                  "task_two_algo_py",
-                                  "py",
-                                  0,
-                                  //@ts-ignore
-                                  e.target.files[0]
-                                );
-                              }}
-                              type="file"
-                              className="sr-only"
-                            />
-                          </label>
-                          <p className="pl-1">or drag and drop</p>
+                    <>
+                      <div
+                          className={
+                            submissionFilesTaskTwo[0].downloadURL
+                                ? "mt-2 flex justify-center rounded-lg border border-solid border-green-400 px-6 py-10"
+                                : isDragOver[1]
+                                    ? "mt-2 flex justify-center rounded-lg border border-solid border-indigo-500 px-6 py-10"
+                                    : "mt-2 flex justify-center rounded-lg border border-dashed border-white/25 px-6 py-10"
+                          }
+                          ref={refs[1]}
+                          onDragOver={(e) => handleDragOver(e, 1)}
+                          onDragLeave={() => handleDragLeave(1)}
+                          onDrop={(e) =>
+                              handleDrop(e, "task_II_py_file", "py", 0)
+                          }
+                      >
+                        <div className="text-center">
+                          {!submissionFilesTaskTwo[0].downloadURL && (
+                              <PaperClipIcon
+                                  className="mx-auto h-12 w-12 text-gray-500"
+                                  aria-hidden="true"
+                              />
+                          )}
+                          {submissionFilesTaskTwo[0].downloadURL && (
+                              <CheckIcon
+                                  className="mx-auto h-12 w-12 text-green-500"
+                                  aria-hidden="true"
+                              />
+                          )}
+                          <div className="mt-4 flex text-sm leading-6 text-gray-400">
+                            <label
+                                htmlFor="file-upload-task_ii"
+                                className="relative cursor-pointer rounded-md bg-gray-900 font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:text-indigo-500"
+                            >
+                              <span>Upload .py</span>
+                              <input
+                                  id="file-upload-task_ii"
+                                  name="file-upload-task_ii"
+                                  onChange={(e) => {
+                                    handleFileChange(
+                                        "task_II_py_file",
+                                        "py",
+                                        0,
+                                        //@ts-ignore
+                                        e.target.files![0]
+                                    );
+                                  }}
+                                  type="file"
+                                  className="sr-only"
+                                  />
+                            </label>
+                            <p className="pl-1">or drag and drop</p>
+                          </div>
+                          <p className="text-xs leading-5 text-gray-400">
+                            .py up to 100KB
+                          </p>
                         </div>
-                        <p className="text-xs leading-5 text-gray-400">
-                          .py up to 100KB
-                        </p>
                       </div>
-                    </div>
-                  </>
+
+                    </>
                 )}
+
+
               </div>
             </div>
           </div>
