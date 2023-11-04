@@ -112,10 +112,9 @@ main(int argc, const char** argv)
         pybind11::exec("locals().clear()");
         std::string uid = pair.value().first;
         std::string algo_id = pair.value().second;
-        std::stringstream ss;
         log_i(main, "Linting algo_id: {} for user: {}", algo_id, uid);
         std::string response = nutc::lint::lint(uid, algo_id);
-        nutc::client::set_lint_success(uid, algo_id, ss.str() + "\n");
+        nutc::client::set_lint_success(uid, algo_id, response + "\n");
     }
     pybind11::finalize_interpreter();
 
