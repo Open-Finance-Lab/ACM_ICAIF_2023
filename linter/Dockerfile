@@ -13,6 +13,13 @@ COPY ./.github/scripts/conan-profile.sh /app/
 RUN cat conan-profile.sh | bash \
     && conan install . -b missing
 
+RUN git init \
+    && git config user.email "gavinwang@gmail.com" \
+    && git config user.name "gavin wang" \
+    && git add . \
+    && git commit -m "Initial commit"
+
+
 COPY . /app
 RUN cmake --preset=ci-docker \
     && cmake --build build --config Release -j

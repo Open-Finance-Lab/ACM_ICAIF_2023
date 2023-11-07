@@ -10,7 +10,6 @@ print_algo_info(const glz::json_t& algo, const std::string& algo_id)
     log_i(firebase, "Running {}", algo["name"].get<std::string>());
     log_i(firebase, "Description: {}", algo["description"].get<std::string>());
     log_i(firebase, "Upload date: {}", algo["uploadDate"].get<std::string>());
-    log_d(firebase, "Downloading at url {}", algo["downloadURL"].get<std::string>());
     log_i(firebase, "Algo id: {}", algo_id);
 }
 
@@ -143,7 +142,7 @@ get_algo(const std::string& uid, const std::string& algo_id)
         return std::nullopt;
     }
     glz::json_t algo_info = user_info["algos"][algo_id];
-    std::string downloadURL = algo_info["downloadURL"].get<std::string>();
+    std::string downloadURL = algo_info["0"]["downloadURL"].get<std::string>();
     print_algo_info(algo_info, algo_id);
     std::string algo_file = storage_request(downloadURL);
     return algo_file;

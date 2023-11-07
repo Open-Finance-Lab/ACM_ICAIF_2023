@@ -135,8 +135,10 @@ main(int argc, const char** argv)
         log_i(main, "Linting algo_id: {} for user: {} on task {}", algo_id, uid, task);
         std::string response;
         if (task == 1) {
+            log_i(main, "linting for track one");
             response = nutc::lint_track_one::lint(uid, algo_id);
         } else {
+            log_i(main, "linting for track two");
             response = nutc::lint_track_two::lint(uid, algo_id);
         }
 
