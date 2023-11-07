@@ -1,4 +1,5 @@
 #include "fetching.hpp"
+#include <unordered_map>
 
 namespace nutc {
 namespace client {
@@ -9,7 +10,6 @@ print_algo_info(const glz::json_t& algo, const std::string& algo_id)
     log_i(firebase, "Running {}", algo["name"].get<std::string>());
     log_i(firebase, "Description: {}", algo["description"].get<std::string>());
     log_i(firebase, "Upload date: {}", algo["uploadDate"].get<std::string>());
-    log_d(firebase, "Downloading at url {}", algo["downloadURL"].get<std::string>());
     log_i(firebase, "Algo id: {}", algo_id);
 }
 
@@ -146,6 +146,39 @@ get_algo(const std::string& uid, const std::string& algo_id)
     print_algo_info(algo_info, algo_id);
     std::string algo_file = storage_request(downloadURL);
     return algo_file;
+}
+
+std::optional<std::unordered_map<std::string, std::string>>
+get_algo_files(const std::string& uid, const std::string& algo_id)
+{
+    glz::json_t user_info = get_user_info(uid);
+
+    if (!user_info.contains("algos")) {
+        log_w(firebase, "User {} has no algos. Will not participate in simulation.", uid);
+        return std::nullopt;
+    }
+
+    if (!user_info["algos"].contains(algo_id)) {
+        log_w(firebase, "User {} does not have algo id {}.", uid, algo_id);
+        return std::nullopt;
+    }
+    glz::json_t algo_info = user_info["algos"][algo_id];
+
+    std::unordered_map<std::string, std::string> algo_files_map;
+    size_t file_idx = 0;
+    while (algo_info.contains(std::to_string(file_idx))) {
+        glz::json_t file = algo_info[std::to_string(file_idx)];
+        log_i(main, "index: {}, file: {}", file_idx, glz::prettify(glz::write_json(file)));
+        file_idx++;
+
+        std::string file_name = file["fileName"].get<std::string>();
+        std::string download_url = file["downloadURL"].get<std::string>();
+        std::string file_contents = storage_request(download_url);
+
+        algo_files_map.insert(std::make_pair(file_name, file_contents));
+    }
+
+    return algo_files_map;
 }
 
 glz::json_t

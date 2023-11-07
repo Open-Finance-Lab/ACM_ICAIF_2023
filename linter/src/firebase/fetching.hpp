@@ -35,5 +35,7 @@ void set_lint_success(
 
 std::optional<std::string> get_algo(const std::string& uid, const std::string& algo_id);
 
+std::optional<std::unordered_map<std::string, std::string>> get_algo_files(const std::string& uid, const std::string& algo_id);
+
 } // namespace client
 } // namespace nutc
