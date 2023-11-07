@@ -32,9 +32,8 @@ export default function Login() {
             </div>
           </div>
 
-          <div className="mt-6 grid grid-cols-2 gap-4">
+          <div className="mt-6 gap-4">
             <GoogleLogin />
-            <GithubLogin />
           </div>
         </div>
 

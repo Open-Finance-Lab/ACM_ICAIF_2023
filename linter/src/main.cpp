@@ -129,6 +129,7 @@ main(int argc, const char** argv)
             continue;
         }
         pybind11::exec("locals().clear()");
+
         std::string uid = std::get<0>(submission.value());
         std::string algo_id = std::get<1>(submission.value());
         int task = std::get<2>(submission.value());
