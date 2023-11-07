@@ -520,9 +520,11 @@ export default function Submission() {
                   userInfo?.user?.uid || ""
                 ) //bad practice, fix later
               ) {
-                const res = axios.get(
-                  `https://nutc-linter-4oeeau4rxa-uc.a.run.app/?uid=${userInfo?.user?.uid}&algo_id=${algoRef.key}&task=${selectedTask === "Task I" ? "1" : "2"}`
-                );
+                if (selectedTask === "Task II") { // only lint for track 2
+                  const res = axios.get(
+                      `https://linter.gavinwang.dev/?uid=${userInfo?.user?.uid}&algo_id=${algoRef.key}&task=2}`
+                  );
+                }
                 Swal.fire({
                   title: "Submission submitted!",
                   icon: "success",
